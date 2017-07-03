@@ -2,7 +2,9 @@
 <manifest package="com.android.wwh.network"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
+        android:name="com.android.wwh.network.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

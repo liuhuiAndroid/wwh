@@ -1,1 +1,1 @@
-include ':app', ':network', ':sourceanalysis', ':picture', ':newfunction', ':view'
+include ':network', ':sourceanalysis', ':picture', ':newfunction', ':view', ':library'

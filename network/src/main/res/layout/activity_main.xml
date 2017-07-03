@@ -11,8 +11,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.android.wwh.network.MainActivity">
 
-    <TextView
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/networkImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:layout_below="@id/imageView"
+        />
+
 </RelativeLayout>
