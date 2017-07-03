@@ -3,6 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
+      <module fileurl="file://$PROJECT_DIR$/newfunction/newfunction.iml" filepath="$PROJECT_DIR$/newfunction/newfunction.iml" />
+      <module fileurl="file://$PROJECT_DIR$/picture/picture.iml" filepath="$PROJECT_DIR$/picture/picture.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sourceanalysis/sourceanalysis.iml" filepath="$PROJECT_DIR$/sourceanalysis/sourceanalysis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/view/view.iml" filepath="$PROJECT_DIR$/view/view.iml" />
       <module fileurl="file://$PROJECT_DIR$/wwh.iml" filepath="$PROJECT_DIR$/wwh.iml" />
     </modules>
   </component>
