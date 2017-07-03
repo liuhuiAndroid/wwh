@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_first"
+                android:text="自定义View（一）"
+                style="@style/MainButton"/>
+
+            <Button
+                android:id="@+id/btn_second"
+                android:text="自定义View（二）"
+                style="@style/MainButton"/>
+
+            <Button
+                android:id="@+id/btn_third"
+                android:text="自定义View（三）"
+                style="@style/MainButton"/>
+
+            <Button
+                android:id="@+id/btn_four"
+                android:text="自定义View（四）"
+                style="@style/MainButton"/>
+
+            <Button
+                android:id="@+id/btn_first_view_group"
+                android:text="自定义ViewGroup"
+                style="@style/MainButton"/>
+
+            <Button
+                android:id="@+id/btn_custom_attr"
+                android:text="深入理解自定义属性"
+                style="@style/MainButton"/>
+
+            <Button
+                android:id="@+id/btn_view_drag_helper"
+                android:text="初识ViewDragHelper"
+                style="@style/MainButton"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

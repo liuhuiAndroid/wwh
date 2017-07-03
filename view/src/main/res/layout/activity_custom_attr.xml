@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <com.android.wwh.view.acquaintance.customattr.MyTextView
+        android:layout_width="@dimen/activity_horizontal_margin"
+        android:layout_height="200dp"
+        app:text = "@string/app_name"
+        app:testAttr = "2520"
+        android:textColor = "#ff0000"
+        />
+
+</LinearLayout>

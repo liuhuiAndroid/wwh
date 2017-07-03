@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <com.android.wwh.view.acquaintance.fourth.CustomVolumControlBar
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+
+        app:firstColor="#252420"
+        app:secondColor="#FDFDFD"
+        app:circleWidth="12dp"
+
+        app:dotCount="20"
+        app:splitSize="25"
+        app:bg="@mipmap/ic_launcher"/>
+
+    <com.android.wwh.view.acquaintance.fourth.CustomVolumControlBar
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        app:bg="@mipmap/ic_launcher"
+        app:circleWidth="10dp"
+        app:dotCount="10"
+        app:firstColor="#00ff00"
+        app:secondColor="#ff0000"
+        app:splitSize="15" />
+
+    <com.android.wwh.view.acquaintance.fourth.CustomVolumControlBar
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"
+        app:bg="@drawable/header"
+        app:circleWidth="10dp"
+        app:dotCount="8"
+        app:firstColor="#ADC6E5"
+        app:secondColor="#0362DB"
+        app:splitSize="25" />
+    
+</LinearLayout>

@@ -8,13 +8,26 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".AdvanceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- 初识 -->
+        <activity android:name=".acquaintance.first.FirstActivity"/>
+        <activity android:name=".acquaintance.second.SecondActivity"/>
+        <activity android:name=".acquaintance.third.ThirdActivity"/>
+        <activity android:name=".acquaintance.fourth.FourthActivity"/>
+        <activity android:name=".acquaintance.firstviewgroup.FirstViewGroupActivity"/>
+        <activity android:name=".acquaintance.customattr.CustomAttrActivity"/>
+        <activity android:name=".acquaintance.viewdraghelper.ViewDragHelperActivity"/>
+
+        <!-- 进阶 -->
+        <activity android:name=".advance.BigBitmapActivity"/>
+
     </application>
 
 </manifest>
