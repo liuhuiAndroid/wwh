@@ -9,3 +9,4 @@
 - [Android详解（三）框架源码分析]
 - [Android详解（四）View相关]
 - [Android详解（五）新的技术]
+> - 2017-07-05 看到IOC框架，需要先看Proxy，先休息下
