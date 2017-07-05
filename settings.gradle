@@ -1,1 +1,1 @@
-include ':network', ':sourceanalysis', ':picture', ':newfunction', ':view', ':library'
+include ':network', ':sourceanalysis', ':picture', ':newfunction', ':view', ':library', ':annotationprocessortest'
