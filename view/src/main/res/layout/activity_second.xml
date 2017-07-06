@@ -5,6 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <!-- 字体的宽度大于图片，且View宽度设置为wrap_content -->
     <com.android.wwh.view.acquaintance.second.CustomImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,6 +17,7 @@
         app:titleTextColor="#ff0000"
         app:titleTextSize="30sp" />
 
+    <!-- View宽度设置为精确值，字体的长度大于此宽度 -->
     <com.android.wwh.view.acquaintance.second.CustomImageView
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -27,6 +29,7 @@
         app:titleTextColor="#00ff00"
         app:titleTextSize="20sp" />
 
+    <!-- 图片的宽度大于字体，且View宽度设置为wrap_content -->
     <com.android.wwh.view.acquaintance.second.CustomImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,4 +40,5 @@
         app:titleText="妹子~"
         app:titleTextColor="#ff0000"
         app:titleTextSize="12sp" />
+
 </LinearLayout>
