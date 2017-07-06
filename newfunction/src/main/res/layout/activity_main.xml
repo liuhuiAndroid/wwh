@@ -22,12 +22,16 @@
         android:id="@+id/btn1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:text="Hello World!"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"/>
 
     <Button
         android:id="@+id/btn2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World2!"/>
+        android:text="Hello World2!"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"/>
 
 </LinearLayout>
