@@ -16,7 +16,9 @@ import io.reactivex.functions.Consumer;
  * FIXME
  */
 public class ChapterOne {
+
     private static final String TAG = "ChapterOne";
+
     public static void demo1() {
         //创建一个上游 Observable：
         Observable<Integer> observable = Observable.create(new ObservableOnSubscribe<Integer>() {
