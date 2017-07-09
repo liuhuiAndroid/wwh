@@ -23,7 +23,7 @@ import com.android.wwh.view.R;
 public class CustomImageView extends View {
 
     private static final int IMAGE_SCALE_FITXY = 0;
-    private static final int IMAGE_SCALE_CENTER = 0;
+    private static final int IMAGE_SCALE_CENTER = 1;
 
     private String mTitleText;
     private int mTitileTextColor;

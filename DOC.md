@@ -1,10 +1,18 @@
-# What Why How
+﻿# What Why How
 ## Blog Catalogue
 - [Android详解（一）图片详解]
+> - 2017-07-04 正在看照片墙
 - [Android详解（二）网络详解]
-> - 已经看了三篇关于Volley.
-> - 现在有个问题再lib中放butterknife
+> - 2017-07-03 已经看了三篇关于Volley.
+> - 2017-07-03 现在有个问题再lib中放butterknife
+> - 2017-07-04 看完全部Volley文章，需要再仔细琢磨几遍
 - [Android详解（三）框架源码分析]
+> - 2017-07-07 学习了三篇EventBus源码分析，需要仔细琢磨
 - [Android详解（四）View相关]
+> - 2017-07-06 Android 自定义控件之起步看了两篇
 - [Android详解（五）新的技术]
+> - 2017-07-05 看到IOC框架，需要先看Proxy，先休息下
+> - 2017-07-05 注解看的云里雾里的
+> - 2017-07-07 一口气看了九篇RxJava,有新的认识
+> - 2017-07-08 看了一点Proxy的知识
 - 测试冲突

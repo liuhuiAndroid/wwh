@@ -35,6 +35,9 @@ public class CustomTitleView extends View {
         this(context,null);
     }
 
+    /**
+     * 默认的布局文件调用的是两个参数的构造方法
+     */
     public CustomTitleView(Context context, AttributeSet attrs) {
         this(context, attrs,0);
     }
@@ -63,11 +66,10 @@ public class CustomTitleView extends View {
             }
         }
         typedArray.recycle();
-        mPaint = new Paint();
 
+        mPaint = new Paint();
         mPaint.setTextSize(mTitleTextSize);
         mRect = new Rect();
-
         //由调用者返回在边界(分配)的最小矩形包含所有的字符
         mPaint.getTextBounds(mTitleText,0,mTitleText.length(), mRect);
 
@@ -76,6 +78,7 @@ public class CustomTitleView extends View {
             @Override
             public void onClick(View v) {
                 mTitleText = randomText();
+                // invalidate:使无效; 使作废; 证明…错误; 使站不住脚
                 // invalidate和postInvalidate都是用来重绘View搜索，
                 // 区别就是invalidate只能在主线程中调用，postInvalidate可以在子线程中调用 requestLayout则是请求重新布局View
                 postInvalidate();
