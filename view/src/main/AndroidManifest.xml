@@ -31,6 +31,9 @@
         <!-- 进阶 -->
         <activity android:name=".advance.BigBitmapActivity"/>
 
+        <!-- -->
+        <activity android:name=".hencoder.HenCoderActivity"/>
+
     </application>
 
 </manifest>

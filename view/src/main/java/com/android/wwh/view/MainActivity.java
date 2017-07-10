@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.android.wwh.view.hencoder.HenCoderActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -20,4 +22,9 @@ public class MainActivity extends AppCompatActivity {
     public void advance(View view){
         startActivity(new Intent(MainActivity.this,AdvanceActivity.class));
     }
+
+    public void baseDraw(View view){
+        startActivity(new Intent(MainActivity.this,HenCoderActivity.class));
+    }
+
 }
