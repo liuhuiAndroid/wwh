@@ -1,4 +1,4 @@
-package com.android.wwh.network;
+package com.android.wwh.network.volley;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -17,7 +17,8 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.android.wwh.library.log.Logger;
-import com.android.wwh.network.entity.Weather;
+import com.android.wwh.network.R;
+import com.android.wwh.network.volley.entity.Weather;
 
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;

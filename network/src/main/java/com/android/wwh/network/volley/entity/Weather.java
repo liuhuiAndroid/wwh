@@ -1,4 +1,4 @@
-package com.android.wwh.network.entity;
+package com.android.wwh.network.volley.entity;
 
 /**
  * Created by we-win on 2017/7/3.
