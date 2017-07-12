@@ -11,7 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by we-win on 2017/7/4.
+ * Android照片墙应用实现，再多的图片也不怕崩溃
  */
 
 public class PhotoWallActivity extends AppCompatActivity {
