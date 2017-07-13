@@ -6,8 +6,11 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)
@@ -157,5 +160,26 @@ public class ChapterOne {
                 Log.d(TAG, "onNext: " + integer);
             }
         });
+    }
+
+    public static void demo5() {
+        Observable.just(1, 2, 3, 4)
+                .subscribeOn(Schedulers.io()) // 指定 subscribe() 发生在 IO 线程
+                .observeOn(AndroidSchedulers.mainThread()) // 指定 Subscriber 的回调发生在主线程
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        Log.d(TAG, "onNext: " + integer);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Log.d(TAG, "onError: " + throwable.getMessage().toString());
+                    }
+                });
+    }
+
+    public static void main(String[] args){
+        demo5();
     }
 }

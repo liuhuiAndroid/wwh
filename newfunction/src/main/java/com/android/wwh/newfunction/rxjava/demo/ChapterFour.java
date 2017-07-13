@@ -4,6 +4,11 @@ import android.util.Log;
 
 import com.android.wwh.newfunction.rxjava.RetrofitProvider;
 import com.android.wwh.newfunction.rxjava.api.Api;
+import com.android.wwh.newfunction.rxjava.entity.UserBaseInfoRequest;
+import com.android.wwh.newfunction.rxjava.entity.UserBaseInfoResponse;
+import com.android.wwh.newfunction.rxjava.entity.UserExtraInfoRequest;
+import com.android.wwh.newfunction.rxjava.entity.UserExtraInfoResponse;
+import com.android.wwh.newfunction.rxjava.entity.UserInfo;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -14,15 +19,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import zlc.season.rxjava2demo.Api;
-import zlc.season.rxjava2demo.RetrofitProvider;
-import zlc.season.rxjava2demo.entity.UserBaseInfoRequest;
-import zlc.season.rxjava2demo.entity.UserBaseInfoResponse;
-import zlc.season.rxjava2demo.entity.UserExtraInfoRequest;
-import zlc.season.rxjava2demo.entity.UserExtraInfoResponse;
-import zlc.season.rxjava2demo.entity.UserInfo;
-
-import static zlc.season.rxjava2demo.MainActivity.TAG;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)

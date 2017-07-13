@@ -6,6 +6,10 @@ import android.widget.Toast;
 
 import com.android.wwh.newfunction.rxjava.RetrofitProvider;
 import com.android.wwh.newfunction.rxjava.api.Api;
+import com.android.wwh.newfunction.rxjava.entity.LoginRequest;
+import com.android.wwh.newfunction.rxjava.entity.LoginResponse;
+import com.android.wwh.newfunction.rxjava.entity.RegisterRequest;
+import com.android.wwh.newfunction.rxjava.entity.RegisterResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import zlc.season.rxjava2demo.Api;
-import zlc.season.rxjava2demo.RetrofitProvider;
-import zlc.season.rxjava2demo.entity.LoginRequest;
-import zlc.season.rxjava2demo.entity.LoginResponse;
-import zlc.season.rxjava2demo.entity.RegisterRequest;
-import zlc.season.rxjava2demo.entity.RegisterResponse;
-
-import static zlc.season.rxjava2demo.MainActivity.TAG;
 
 /**
  * Author: Season(ssseasonnn@gmail.com)
