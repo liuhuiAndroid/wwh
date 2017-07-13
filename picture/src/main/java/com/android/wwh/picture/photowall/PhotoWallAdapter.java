@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.android.wwh.picture.Images;
 import com.android.wwh.picture.R;
 
 import java.net.HttpURLConnection;

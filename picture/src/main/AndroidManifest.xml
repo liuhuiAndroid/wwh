@@ -3,6 +3,7 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name="com.android.wwh.picture.App"
@@ -20,6 +21,7 @@
         </activity>
 
         <activity android:name=".photowall.PhotoWallActivity"/>
+        <activity android:name=".photowallfalls.PhotoWallFallsActivity"/>
 
     </application>
 

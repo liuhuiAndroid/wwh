@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Picture</string>
+
+    <string name="border_top">Border Top</string>
+    <string name="border_bottom">Border Bottom</string>
+    <string name="image_url">Image Url</string>
+
 </resources>

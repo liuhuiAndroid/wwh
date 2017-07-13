@@ -1,4 +1,4 @@
-package com.android.wwh.picture.photowall;
+package com.android.wwh.picture;
 
 /**
  * 收集的图片地址

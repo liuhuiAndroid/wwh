@@ -1,5 +1,6 @@
 package com.android.wwh.picture;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -10,12 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.wwh.library.log.Logger;
 import com.android.wwh.picture.photowall.PhotoWallActivity;
+import com.android.wwh.picture.photowallfalls.PhotoWallFallsActivity;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * 主要代码是关于Android高效加载大图、多图解决方案，有效避免程序OOM
@@ -23,24 +29,44 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.image)
-    ImageView mImage;
+    private static final int REQUECT_CODE_SDCARD = 2;
+
+    @BindView(R.id.imageView)
+    ImageView mImagView;
 
     private LruCache<String, Bitmap> mLruCache;
+    private RxPermissions mRxPermissions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mRxPermissions = new RxPermissions(this);
 
         testMaxMemory();
         testBitmap();
         testLruCache();
     }
 
-    public void android_photo_wall(View view){
+    public void android_photo_wall(View view) {
         startActivity(new Intent(MainActivity.this, PhotoWallActivity.class));
+    }
+
+    public void android_photo_wall_falls(View view) {
+        // 申请权限
+        mRxPermissions
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean granted) throws Exception {
+                        if (granted) { // Always true pre-M
+                            startActivity(new Intent(MainActivity.this, PhotoWallFallsActivity.class));
+                        } else {
+                            Toast.makeText(MainActivity.this, "没有SdCard权限!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     /**
@@ -48,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
      * LruCache:把最近使用的对象用强引用存储在 LinkedHashMap 中，并且把最近最少使用的对象在缓存值达到预设定值之前从内存中移除
      */
     private void testLruCache() {
-        // 获取到可用内存的最大值，使用内存超出这个值会引起OutOfMemory异常。
+        // 获取到可用内存的最大值，使用内存超出这值会引起OutOfMemory异常。
         // LruCache通过构造函数传入缓存值，以KB为单位。
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         // 使用最大可用内存值的1/8作为缓存的大小。
@@ -61,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 return bitmap.getByteCount() / 1024;
             }
         };
-        loadBitmap(R.mipmap.ic_launcher, mImage);
+        loadBitmap(R.mipmap.ic_launcher, mImagView);
     }
 
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
@@ -152,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 使用BitmapFactory来对图片进行压缩
      */
-    public static Bitmap    decodeSampledBitmapFromResource(Resources res, int resId,
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();
