@@ -10,6 +10,7 @@
         android:layout_height="90dip"
         android:src="@mipmap/ic_launcher"
         android:layout_centerInParent="true"
+        android:scaleType="fitXY"
         />
 
 </LinearLayout>

@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 import android.util.LruCache;
 
 /**
- * Created by we-win on 2017/7/13.
+ * 提供了其它几个方法可以操作LruCache，以及对图片进行压缩和读取
  */
 
 public class ImageLoader {

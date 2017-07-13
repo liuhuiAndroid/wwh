@@ -18,12 +18,12 @@
     <GridView
         android:id="@+id/photo_wall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:columnWidth="90dip"
         android:gravity="center"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="10dip"
+        android:verticalSpacing="1dip"
         />
 
 

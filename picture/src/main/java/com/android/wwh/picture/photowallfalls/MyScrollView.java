@@ -1,6 +1,7 @@
 package com.android.wwh.picture.photowallfalls;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by we-win on 2017/7/13.
+ * 实现瀑布流照片墙的核心类
  */
 
 public class MyScrollView extends ScrollView implements View.OnTouchListener {
@@ -161,6 +162,7 @@ public class MyScrollView extends ScrollView implements View.OnTouchListener {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+        // 参数changed表示view有新的尺寸或位置
         if (changed && !loadOnce) {
             scrollViewHeight = getHeight();
             scrollLayout = getChildAt(0);
@@ -169,6 +171,7 @@ public class MyScrollView extends ScrollView implements View.OnTouchListener {
             thirdColumn = (LinearLayout) findViewById(R.id.third_column);
             columnWidth = firstColumn.getWidth();
             loadOnce = true;
+            // 先调用一次这个方法，以初始化第一页的图片
             loadMoreImages();
         }
     }
@@ -187,6 +190,7 @@ public class MyScrollView extends ScrollView implements View.OnTouchListener {
     }
 
     /**
+     * 专门用于加载下一页的图片的方法
      * 开始加载下一页的图片，每张图片都会开启一个异步线程去下载。 
      */
     public void loadMoreImages() {
@@ -301,9 +305,7 @@ public class MyScrollView extends ScrollView implements View.OnTouchListener {
 
         /**
          * 根据传入的URL，对图片进行加载。如果这张图片已经存在于SD卡中，则直接从SD卡里读取，否则就从网络上下载。 
-         *
-         * @param imageUrl
-         *            图片的URL地址 
+         * @param imageUrl 图片的URL地址
          * @return 加载到内存的图片。 
          */
         private Bitmap loadImage(String imageUrl) {
@@ -325,12 +327,9 @@ public class MyScrollView extends ScrollView implements View.OnTouchListener {
         /**
          * 向ImageView中添加一张图片 
          *
-         * @param bitmap
-         *            待添加的图片 
-         * @param imageWidth
-         *            图片的宽度 
-         * @param imageHeight
-         *            图片的高度 
+         * @param bitmap 待添加的图片
+         * @param imageWidth 图片的宽度
+         * @param imageHeight 图片的高度
          */
         private void addImage(Bitmap bitmap, int imageWidth, int imageHeight) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -344,14 +343,21 @@ public class MyScrollView extends ScrollView implements View.OnTouchListener {
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setPadding(5, 5, 5, 5);
                 imageView.setTag(R.string.image_url, mImageUrl);
+                imageView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), ImageDetailActivity.class);
+                        intent.putExtra("image_path", getImagePath(mImageUrl));
+                        getContext().startActivity(intent);
+                    }
+                });
                 findColumnToAdd(imageView, imageHeight).addView(imageView);
                 imageViewList.add(imageView);
             }
         }
 
         /**
-         * 找到此时应该添加图片的一列。原则就是对三列的高度进行判断，当前高度最小的一列就是应该添加的一列。 
-         *
+         * 找到此时应该添加图片的一列。原则就是对三列的高度进行判断，当前高度最小的一列就是应该添加的一列。
          * @param imageView
          * @param imageHeight
          * @return 应该添加图片的一列
@@ -373,8 +379,7 @@ public class MyScrollView extends ScrollView implements View.OnTouchListener {
                 if (secondColumnHeight <= thirdColumnHeight) {
                     imageView.setTag(R.string.border_top, secondColumnHeight);
                     secondColumnHeight += imageHeight;
-                    imageView
-                            .setTag(R.string.border_bottom, secondColumnHeight);
+                    imageView .setTag(R.string.border_bottom, secondColumnHeight);
                     return secondColumn;
                 }
                 imageView.setTag(R.string.border_top, thirdColumnHeight);

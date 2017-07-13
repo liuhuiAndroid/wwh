@@ -22,6 +22,9 @@
 
         <activity android:name=".photowall.PhotoWallActivity"/>
         <activity android:name=".photowallfalls.PhotoWallFallsActivity"/>
+        <activity android:name=".photowallfalls.ImageDetailActivity"/>
+        <activity android:name=".disklrucache.DiskLruCacheActivity"/>
+        <activity android:name=".photowallfullversion.PhotoWallFullVersionActivity"/>
 
     </application>
 

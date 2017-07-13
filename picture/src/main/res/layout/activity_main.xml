@@ -28,6 +28,22 @@
         android:textAllCaps="false"
         android:textColor="@android:color/black"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Android DiskLruCache解析"
+        android:onClick="android_disklrucache"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Android 照片墙完整版"
+        android:onClick="android_photo_wall_full_version"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"/>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
