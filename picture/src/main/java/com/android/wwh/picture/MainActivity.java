@@ -17,7 +17,10 @@ import com.android.wwh.picture.photowall.PhotoWallActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+/**
+ * 主要代码是关于Android高效加载大图、多图解决方案，有效避免程序OOM
+ * 并给其他研究问题提供入口
+ */
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.image)
@@ -31,24 +34,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
         testMaxMemory();
         testBitmap();
         testLruCache();
-
     }
 
     public void android_photo_wall(View view){
         startActivity(new Intent(MainActivity.this, PhotoWallActivity.class));
     }
 
+    /**
+     * 使用内存缓存技术来对图片进行缓存，让你的应用程序在加载很多图片的时候可以提高响应速度和流畅性
+     * LruCache:把最近使用的对象用强引用存储在 LinkedHashMap 中，并且把最近最少使用的对象在缓存值达到预设定值之前从内存中移除
+     */
     private void testLruCache() {
+        // 获取到可用内存的最大值，使用内存超出这个值会引起OutOfMemory异常。
+        // LruCache通过构造函数传入缓存值，以KB为单位。
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        // 使用最大可用内存值的1/8作为缓存的大小。
         int cacheSize = maxMemory / 8;
         mLruCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(String key, Bitmap bitmap) {
                 // bitmap.getRowBytes() * bitmap.getHeight() = bitmap.getByteCount()
+                // 重写此方法来衡量每张图片的大小，默认返回图片数量。
                 return bitmap.getByteCount() / 1024;
             }
         };
@@ -67,11 +76,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadBitmap(int resId, ImageView imageView) {
         final String imageKey = String.valueOf(resId);
+        // 首先会在 LruCache 的缓存中进行检查
         final Bitmap bitmap = getBitmapFromMemCache(imageKey);
         if (bitmap != null) {
+            // 如果找到了相应的键值，则会立刻更新ImageView
             imageView.setImageBitmap(bitmap);
         } else {
-
+            // 否则开启一个后台线程来加载这张图片
             BitmapWorkerTask task = new BitmapWorkerTask(imageView);
             task.execute(resId);
         }
@@ -89,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         protected Bitmap doInBackground(Integer... params) {
             final Bitmap bitmap = decodeSampledBitmapFromResource(
                     getResources(), params[0], 100, 100);
+            // 把新加载的图片的键值对放到缓存中
             addBitmapToMemoryCache(String.valueOf(params[0]), bitmap);
             return bitmap;
         }
@@ -100,17 +112,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 将任意一张图片压缩成100*100的缩略图，并在ImageView上展示
+     */
     private void testBitmap() {
         Bitmap bitmap = decodeSampledBitmapFromResource(getResources(), R.mipmap.myimage, 400, 300);
         Logger.i("bitmap：" + bitmap.getWidth() + "," + bitmap.getHeight()); // bitmap：450,600
         //        mImage.setImageBitmap(bitmap);
     }
 
+    /**
+     * 查看每个应用程序最高可用内存是多少
+     */
     private void testMaxMemory() {
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / (1024 * 1024));
         Logger.i("Max memory is " + maxMemory + "M"); // 我的手机一直是384M
     }
 
+    /**
+     * 计算出合适的inSampleSize值
+     */
     public static int calculateInSampleSize(BitmapFactory.Options options,
                                             int reqWidth, int reqHeight) {
         // 源图片的高度和宽度
@@ -128,7 +149,10 @@ public class MainActivity extends AppCompatActivity {
         return inSampleSize;
     }
 
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+    /**
+     * 使用BitmapFactory来对图片进行压缩
+     */
+    public static Bitmap    decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();

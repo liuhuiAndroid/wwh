@@ -4,6 +4,17 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <!-- 就是我们程序中的“墙” -->
+    <!-- columnWidth设置列的宽度 +
+        numColumns="auto_fit"：表示有多少列，如果设置为auto_fit，将根据columnWidth和Spacing来自动计算
+        设置GridView列宽并尽可能的填满可用空间。会随着屏幕的大小自动调节列数的。
+
+        stretchMode="columnWidth" ：如何填满空余的位置，模拟器采用WVGA800*480，每排4列，有4＊100＋5＊3＝415，还余65px的空间，
+        如果是columnWidth，则这剩余的65将分摊给4列，每列增加16/17px。如果采用SpacingWidth，则分摊给3个间隔空隙
+
+        verticalSpacing：grid元素之间的竖直间隔
+        horizontalSpacing：grid元素之间的水平间隔
+        -->
     <GridView
         android:id="@+id/photo_wall"
         android:layout_width="match_parent"

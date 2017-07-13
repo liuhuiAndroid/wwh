@@ -1,7 +1,7 @@
 package com.android.wwh.picture.photowall;
 
 /**
- * Created by we-win on 2017/7/4.
+ * 收集的图片地址
  */
 
 public class Images {

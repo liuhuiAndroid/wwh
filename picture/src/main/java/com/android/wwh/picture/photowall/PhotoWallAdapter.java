@@ -61,6 +61,8 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements AbsListVie
         super(context, textViewResourceId, objects);
         mPhotoWall = photoWall;
         taskCollection = new HashSet<BitmapWorkerTask>();
+
+        // **初始化了LruCache类，并设置了最大缓存容量为程序最大可用内存的1/8
         // 获取应用程序最大可用内存
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int cacheSize = maxMemory / 8;
@@ -74,6 +76,9 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements AbsListVie
         mPhotoWall.setOnScrollListener(this);
     }
 
+    /**
+     * 为每个ImageView设置了一个唯一的Tag，这个Tag的作用是为了后面能够准确地找回这个ImageView，不然异步加载图片会出现乱序的情况
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final String url = getItem(position);
@@ -86,6 +91,7 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements AbsListVie
         final ImageView photo = (ImageView) view.findViewById(R.id.photo);
         // 给ImageView设置一个Tag，保证异步加载图片时不会乱序
         photo.setTag(url);
+        // 调用了setImageView()方法为ImageView设置一张图片
         setImageView(url, photo);
         return view;
     }
@@ -94,12 +100,12 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements AbsListVie
      * 给ImageView设置图片。首先从LruCache中取出图片的缓存，设置到ImageView上。如果LruCache中没有该图片的缓存，
      * 就给ImageView设置一张默认图片。
      *
-     * @param imageUrl
-     *            图片的URL地址，用于作为LruCache的键。
-     * @param imageView
-     *            用于显示图片的控件。
+     * @param imageUrl 图片的URL地址，用于作为LruCache的键。
+     * @param imageView 用于显示图片的控件。
      */
     private void setImageView(String imageUrl, ImageView imageView) {
+        // 首先会从LruCache缓存中查找是否已经缓存了这张图片
+        // 如果成功找到则将缓存中的图片显示在ImageView上，否则就显示一张默认的空图片。
         Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
@@ -133,9 +139,15 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements AbsListVie
         return mMemoryCache.get(key);
     }
 
+    /**
+     * 在滚动监听器中下载图片
+     */
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // 仅当GridView静止时才去下载图片，GridView滑动时取消所有正在下载的任务
+        // 仅当GridView静止时才去下载图片，GridView滑动时取消所有正在下载的任务。为了保证GridView滚动的流畅性
+        // SCROLL_STATE_IDLE:滑动停止
+        // SCROLL_STATE_TOUCH_SCROLL:手接触ScrollView触发一次
+        // SCROLL_STATE_FLING:正在滚动
         if (scrollState == SCROLL_STATE_IDLE) {
             loadBitmaps(mFirstVisibleItem, mVisibleItemCount);
         } else {
@@ -143,6 +155,9 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements AbsListVie
         }
     }
 
+    /**
+     * 滚动监听
+     */
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                          int totalItemCount) {
@@ -160,10 +175,8 @@ public class PhotoWallAdapter extends ArrayAdapter<String> implements AbsListVie
      * 加载Bitmap对象。此方法会在LruCache中检查所有屏幕中可见的ImageView的Bitmap对象，
      * 如果发现任何一个ImageView的Bitmap对象不在缓存中，就会开启异步线程去下载图片。
      *
-     * @param firstVisibleItem
-     *            第一个可见的ImageView的下标
-     * @param visibleItemCount
-     *            屏幕中总共可见的元素数
+     * @param firstVisibleItem 第一个可见的ImageView的下标
+     * @param visibleItemCount 屏幕中总共可见的元素数
      */
     private void loadBitmaps(int firstVisibleItem, int visibleItemCount) {
         try {
