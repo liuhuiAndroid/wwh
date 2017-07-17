@@ -1,1 +1,1 @@
-include ':network', ':sourceanalysis', ':picture', ':newfunction', ':view', ':library', ':annotationprocessortest'
+include ':network', ':sourceanalysis', ':picture', ':newfunction', ':view', ':library', ':annotationprocessortest', ':javabasis'

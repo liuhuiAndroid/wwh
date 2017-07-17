@@ -44,6 +44,14 @@
         android:textAllCaps="false"
         android:textColor="@android:color/black"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Android 创建强大的图片加载类"
+        android:onClick="android_handler_image_loader"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"/>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
