@@ -19,6 +19,7 @@ import com.android.wwh.picture.handlerimageloader.HandlerImageLoaderActivity;
 import com.android.wwh.picture.photowall.PhotoWallActivity;
 import com.android.wwh.picture.photowallfalls.PhotoWallFallsActivity;
 import com.android.wwh.picture.photowallfullversion.PhotoWallFullVersionActivity;
+import com.android.wwh.picture.pictureselector.imageloader.PictureSelectorActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import butterknife.BindView;
@@ -113,6 +114,22 @@ public class MainActivity extends AppCompatActivity {
                     public void accept(@NonNull Boolean granted) throws Exception {
                         if (granted) { // Always true pre-M
                             startActivity(new Intent(MainActivity.this, HandlerImageLoaderActivity.class));
+                        } else {
+                            Toast.makeText(MainActivity.this, "没有SdCard权限!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    public void android_picture_selector(View view) {
+        // 申请权限
+        mRxPermissions
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean granted) throws Exception {
+                        if (granted) { // Always true pre-M
+                            startActivity(new Intent(MainActivity.this, PictureSelectorActivity.class));
                         } else {
                             Toast.makeText(MainActivity.this, "没有SdCard权限!", Toast.LENGTH_SHORT).show();
                         }

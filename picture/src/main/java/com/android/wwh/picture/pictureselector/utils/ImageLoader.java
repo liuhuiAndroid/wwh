@@ -1,4 +1,4 @@
-package com.android.wwh.picture.handlerimageloader;
+package com.android.wwh.picture.pictureselector.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,7 +52,7 @@ public class ImageLoader {
     /**
      * 引入一个值为1的信号量，防止mPoolThreadHander未初始化完成
      */
-    private volatile Semaphore mSemaphore = new Semaphore(1);
+    private volatile Semaphore mSemaphore = new Semaphore(0);
 
     /**
      * 引入一个值为1的信号量，由于线程池内部也有一个阻塞线程，防止加入任务的速度过快，使LIFO效果不明显
@@ -73,12 +73,10 @@ public class ImageLoader {
 
     /**
      * 单例获得该实例对象
-     * 懒加载
      *
      * @return
      */
     public static ImageLoader getInstance() {
-
         if (mInstance == null) {
             synchronized (ImageLoader.class) {
                 if (mInstance == null) {
@@ -89,31 +87,20 @@ public class ImageLoader {
         return mInstance;
     }
 
-    /**
-     * @param threadCount 线程池中线程的数量
-     * @param type        队列的工作方式
-     */
     private ImageLoader(int threadCount, Type type) {
         init(threadCount, type);
     }
 
     private void init(int threadCount, Type type) {
-        // 创建了mPoolThread这个子线程，在这个子线程中我们执行了Looper.prepare,初始化mPoolThreadHander，Looper.loop；
         // loop thread
         mPoolThread = new Thread() {
             @Override
             public void run() {
-                try {
-                    // 请求一个信号量
-                    mSemaphore.acquire();
-                } catch (InterruptedException e) {
-                }
                 Looper.prepare();
 
                 mPoolThreadHander = new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
-                        // 直接调用了getTask方法取出一个任务，然后放入线程池去执行。
                         mThreadPool.execute(getTask());
                         try {
                             mPoolSemaphore.acquire();
@@ -155,7 +142,6 @@ public class ImageLoader {
         // set tag
         imageView.setTag(path);
         // UI线程
-        // 初始化了一个mHandler用于设置imageView的bitmap
         if (mHandler == null) {
             mHandler = new Handler() {
                 @Override
@@ -171,10 +157,8 @@ public class ImageLoader {
             };
         }
 
-        // 我们首先去从LruCache中去查找是否已经缓存了此图片
         Bitmap bm = getBitmapFromLruCache(path);
         if (bm != null) {
-            // 如果找到了，则直接使用mHandler去发送消息,更新执行handleMessage代码去更新UI
             ImgBeanHolder holder = new ImgBeanHolder();
             holder.bitmap = bm;
             holder.imageView = imageView;
@@ -183,21 +167,18 @@ public class ImageLoader {
             message.obj = holder;
             mHandler.sendMessage(message);
         } else {
-            // 如果没有存在缓存中，则创建一个Runnable对象作为任务，去执行addTask方法加入任务队列
             addTask(new Runnable() {
                 @Override
                 public void run() {
-                    // getImageViewWidth根据ImageView获取适当的图片的尺寸，用于后面的压缩图片
+
                     ImageSize imageSize = getImageViewWidth(imageView);
 
                     int reqWidth = imageSize.width;
                     int reqHeight = imageSize.height;
 
-                    // 会根据计算的需要的宽和高，对图片进行压缩
-                    Bitmap bm = decodeSampledBitmapFromResource(path, reqWidth, reqHeight);
-                    // 将压缩后的图片放入缓存
+                    Bitmap bm = decodeSampledBitmapFromResource(path, reqWidth,
+                            reqHeight);
                     addBitmapToLruCache(path, bm);
-                    // 创建消息，使用mHandler进行发送，更新UI
                     ImgBeanHolder holder = new ImgBeanHolder();
                     holder.bitmap = getBitmapFromLruCache(path);
                     holder.imageView = imageView;
@@ -215,6 +196,7 @@ public class ImageLoader {
 
     /**
      * 添加一个任务
+     *
      * @param runnable
      */
     private synchronized void addTask(Runnable runnable) {
@@ -225,6 +207,7 @@ public class ImageLoader {
         } catch (InterruptedException e) {
         }
         mTasks.add(runnable);
+
         mPoolThreadHander.sendEmptyMessage(0x110);
     }
 
@@ -392,7 +375,6 @@ public class ImageLoader {
             int fieldValue = (Integer) field.get(object);
             if (fieldValue > 0 && fieldValue < Integer.MAX_VALUE) {
                 value = fieldValue;
-
                 Log.e("TAG", value + "");
             }
         } catch (Exception e) {
