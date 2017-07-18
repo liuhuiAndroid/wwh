@@ -198,6 +198,7 @@ public class MessageQueue {
 //                mQuiting = true;
 //            }
 //
+//            // 将所有的消息按时间来进行排序
 //            msg.when = when;
 //            //Log.d("MessageQueue", "Enqueing: " + msg);
 //            Message p = mMessages;

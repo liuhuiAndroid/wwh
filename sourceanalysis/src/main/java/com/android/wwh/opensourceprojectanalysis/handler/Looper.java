@@ -52,6 +52,11 @@ import android.util.Printer;
   *          Looper.loop();
   *      }
   *  }</pre>
+  *
+  *  Looper主要作用：
+  *   1、与当前线程绑定，保证一个线程只会有一个Looper实例，同时一个Looper实例也只有一个MessageQueue。
+  *   2、loop()方法，不断从MessageQueue中去取消息，交给消息的target属性的dispatchMessage去处理。
+ 好了，我们的异步消息处理线程已经有了消息队列（MessageQueue），也有了在无限循环体中取出消息的哥们，现在缺的就是发送消息的对象了，于是乎：Handler登场了。
   */
 public class Looper {
 //    private static final boolean DEBUG = false;
@@ -73,9 +78,12 @@ public class Looper {
 //      * {@link #quit()}.
 //      */
 //    public static final void prepare() {
+//        // 判断了sThreadLocal是否为null，否则抛出异常。这也就说明了Looper.prepare()方法不能被调用两次，同时也保证了一个线程中只有一个Looper实例
 //        if (sThreadLocal.get() != null) {
 //            throw new RuntimeException("Only one Looper may be created per thread");
 //        }
+//        // sThreadLocal是一个ThreadLocal对象，可以在一个线程中存储变量
+//        // 将一个Looper的实例放入了ThreadLocal
 //        sThreadLocal.set(new Looper());
 //    }
 //
@@ -109,6 +117,7 @@ public class Looper {
 //     */
 //    public static final void loop() {
 //        Looper me = myLooper();
+//        // 拿到该looper实例中的mQueue（消息队列）
 //        android.os.MessageQueue queue = me.mQueue;
 //
 //        // Make sure the identity of this thread is that of the local process,
@@ -116,7 +125,9 @@ public class Looper {
 //        Binder.clearCallingIdentity();
 //        final long ident = Binder.clearCallingIdentity();
 //
+//        // 进入了我们所说的无限循环。
 //        while (true) {
+//            // 取出一条消息，如果没有消息则阻塞。
 //            Message msg = queue.next(); // might block
 //            //if (!me.mRun) {
 //            //    break;
@@ -130,6 +141,7 @@ public class Looper {
 //                        ">>>>> Dispatching to " + msg.target + " "
 //                        + msg.callback + ": " + msg.what
 //                        );
+//                // 把消息交给msg的target的dispatchMessage方法去处理。Msg的target是什么呢？其实就是handler对象
 //                msg.target.dispatchMessage(msg);
 //                if (me.mLogging!= null) me.mLogging.println(
 //                        "<<<<< Finished to    " + msg.target + " "
@@ -146,6 +158,7 @@ public class Looper {
 //                            + msg.callback + " what=" + msg.what);
 //                }
 //
+//                // 释放消息占据的资源。
 //                msg.recycle();
 //            }
 //        }
@@ -154,6 +167,7 @@ public class Looper {
 //    /**
 //     * Return the Looper object associated with the current thread.  Returns
 //     * null if the calling thread is not associated with a Looper.
+//     * 方法直接返回了sThreadLocal存储的Looper实例，如果me为null则抛出异常，也就是说looper方法必须在prepare方法之后运行。
 //     */
 //    public static final Looper myLooper() {
 //        return (Looper)sThreadLocal.get();
@@ -181,6 +195,9 @@ public class Looper {
 //        return myLooper().mQueue;
 //    }
 //
+//    /**
+//     * 在构造方法中，创建了一个MessageQueue（消息队列）。
+//     */
 //    private Looper() {
 //        mQueue = new android.os.MessageQueue();
 //        mRun = true;

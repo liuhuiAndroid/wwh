@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.android.wwh.opensourceprojectanalysis.EventBus.EventBusActivity;
+import com.android.wwh.opensourceprojectanalysis.handler.HandlerThreadActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,4 +21,9 @@ public class MainActivity extends AppCompatActivity {
     public void eventBusOnClick(View view){
         startActivity(new Intent(MainActivity.this,EventBusActivity.class));
     }
+
+    public void handlerThreadOnClick(View view){
+        startActivity(new Intent(MainActivity.this,HandlerThreadActivity.class));
+    }
+
 }

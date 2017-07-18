@@ -15,8 +15,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="EventBus源码分析"
+        android:text="EventBus 源码分析"
         android:textAllCaps="false"
         android:onClick="eventBusOnClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HandlerThread 完全解析"
+        android:textAllCaps="false"
+        android:onClick="handlerThreadOnClick"/>
 
 </LinearLayout>

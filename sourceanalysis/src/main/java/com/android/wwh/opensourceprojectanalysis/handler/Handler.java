@@ -82,14 +82,17 @@ public class Handler {
 //
 //    /**
 //     * Subclasses must implement this to receive messages.
+//     * 这是一个空方法,因为消息的最终回调是由我们控制的，我们在创建handler的时候都是复写handleMessage方法，然后根据msg.what进行消息处理。
 //     */
 //    public void handleMessage(Message msg) {
 //    }
 //
 //    /**
 //     * Handle system messages here.
+//     * msg的callback和target都有值，那么会执行哪个呢？
 //     */
 //    public void dispatchMessage(Message msg) {
+//        // 如果不为null，则执行callback回调，也就是我们的Runnable对象。
 //        if (msg.callback != null) {
 //            handleCallback(msg);
 //        } else {
@@ -98,6 +101,7 @@ public class Handler {
 //                    return;
 //                }
 //            }
+//            // 调用了handleMessage方法
 //            handleMessage(msg);
 //        }
 //    }
@@ -118,11 +122,13 @@ public class Handler {
 //            }
 //        }
 //
+//        // 通过Looper.myLooper()获取了当前线程保存的Looper实例
 //        mLooper = Looper.myLooper();
 //        if (mLooper == null) {
 //            throw new RuntimeException(
 //                "Can't create handler inside thread that has not called Looper.prepare()");
 //        }
+//        // 获取了这个Looper实例中保存的MessageQueue（消息队列），这样就保证了handler的实例与我们Looper实例中MessageQueue关联上了。
 //        mQueue = mLooper.mQueue;
 //        mCallback = null;
 //    }
@@ -455,7 +461,11 @@ public class Handler {
 //        boolean sent = false;
 //        android.os.MessageQueue queue = mQueue;
 //        if (queue != null) {
+//            //  为msg.target赋值为this，
+//            // 【如果大家还记得Looper的loop方法会取出每个msg然后交给msg.target.dispatchMessage(msg)去处理消息】，也就是把当前的handler作为msg的target属性。
 //            msg.target = this;
+//            // 直接获取MessageQueue然后调用了enqueueMessage方法
+//            // 最终会调用queue的enqueueMessage的方法，也就是说handler发出的消息，最终会保存到消息队列中去。
 //            sent = queue.enqueueMessage(msg, uptimeMillis);
 //        }
 //        else {
@@ -572,6 +582,10 @@ public class Handler {
 //        }
 //    }
 //
+//    /**
+//     * 在getPostMessage中，得到了一个Message对象，然后将我们创建的Runable对象作为callback属性，赋值给了此message.
+//     注：产生一个Message对象，可以new  ，也可以使用Message.obtain()方法；两者都可以，但是更建议使用obtain方法，因为Message内部维护了一个Message池用于Message的复用，避免使用new 重新分配内存。
+//     */
 //    private final Message getPostMessage(Runnable r) {
 //        Message m = Message.obtain();
 //        m.callback = r;
