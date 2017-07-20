@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.android.wwh.library.log.Logger;
 import com.android.wwh.picture.disklrucache.DiskLruCacheActivity;
 import com.android.wwh.picture.handlerimageloader.HandlerImageLoaderActivity;
+import com.android.wwh.picture.networkimageloader.NetworkImageLoaderActivity;
 import com.android.wwh.picture.photowall.PhotoWallActivity;
 import com.android.wwh.picture.photowallfalls.PhotoWallFallsActivity;
 import com.android.wwh.picture.photowallfullversion.PhotoWallFullVersionActivity;
@@ -130,6 +131,22 @@ public class MainActivity extends AppCompatActivity {
                     public void accept(@NonNull Boolean granted) throws Exception {
                         if (granted) { // Always true pre-M
                             startActivity(new Intent(MainActivity.this, PictureSelectorActivity.class));
+                        } else {
+                            Toast.makeText(MainActivity.this, "没有SdCard权限!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    public void android_network_imageloader(View view) {
+        // 申请权限
+        mRxPermissions
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean granted) throws Exception {
+                        if (granted) { // Always true pre-M
+                            startActivity(new Intent(MainActivity.this, NetworkImageLoaderActivity.class));
                         } else {
                             Toast.makeText(MainActivity.this, "没有SdCard权限!", Toast.LENGTH_SHORT).show();
                         }
