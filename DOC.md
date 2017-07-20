@@ -26,3 +26,4 @@
 > - 2017-07-12 学习RxJava并完善一篇关于RxJava的博客
 - [Android详解（六）设计模式]
 > -
+> - TODO:多了解MVP或者MVVM下个项目用
