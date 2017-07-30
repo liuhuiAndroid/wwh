@@ -78,6 +78,14 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"/>
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="android_rx_image_loader"
+                android:text="Android RxImageLoader"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"/>
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="200dp"

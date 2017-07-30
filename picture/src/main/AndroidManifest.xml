@@ -28,6 +28,7 @@
         <activity android:name=".handlerimageloader.HandlerImageLoaderActivity"/>
         <activity android:name=".pictureselector.imageloader.PictureSelectorActivity"/>
         <activity android:name=".networkimageloader.NetworkImageLoaderActivity"/>
+        <activity android:name=".rxglide.RxImageLoaderActivity"/>
 
     </application>
 

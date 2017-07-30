@@ -38,4 +38,7 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 
     compile 'com.jakewharton:disklrucache:2.0.2'
+
+    //RxImageLoader例子用到的
+    compile "tony-common:tony-common-utils:1.0.1"
 }
