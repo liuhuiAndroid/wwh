@@ -31,7 +31,7 @@ public class NetWorkCacheObservable extends CacheObservable {
     }
 
     /**
-     * 简单获取图片
+     * 下载文件
      * @param url
      * @return
      */

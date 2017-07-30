@@ -9,9 +9,9 @@ import android.util.LruCache;
 
 public class MemoryCacheObservable extends CacheObservable {
 
-    int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-    int cacheSize = maxMemory / 8;
-    LruCache<String, Bitmap> mLruCache = new LruCache<String, Bitmap>(cacheSize) {
+    private int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+    private int cacheSize = maxMemory / 8;
+    private LruCache<String, Bitmap> mLruCache = new LruCache<String, Bitmap>(cacheSize) {
         @Override
         protected int sizeOf(String key, Bitmap bitmap) {
             return bitmap.getRowBytes() * bitmap.getHeight() / 1024;
