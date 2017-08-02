@@ -1,4 +1,4 @@
-package com.android.wwh.network.volley;
+package com.android.wwh.network;
 
 import android.app.Application;
 import android.util.Log;
@@ -6,7 +6,6 @@ import android.util.Log;
 import com.android.wwh.library.log.CrashlyticsTree;
 import com.android.wwh.library.log.Logger;
 import com.android.wwh.library.log.Settings;
-import com.android.wwh.network.BuildConfig;
 
 /**
  * Created by we-win on 2017/7/3.
