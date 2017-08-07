@@ -32,10 +32,32 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="testHttpPost"
-                android:text="testHttpPost"
+                android:onClick="testHttpPostForm"
+                android:text="testHttpPost Form表单形式"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="testHttpPostJson"
+                android:text="testHttpPost Json参数形式"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="testHttpFileDownload"
+                android:text="testHttpFileDownload"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@android:style/Widget.ProgressBar.Horizontal"/>
 
             <Button
                 android:layout_width="match_parent"
@@ -52,7 +74,6 @@
                 android:text="testCertificates"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"/>
-
 
 
         </LinearLayout>

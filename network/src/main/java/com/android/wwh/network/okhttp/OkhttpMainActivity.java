@@ -1,17 +1,33 @@
 package com.android.wwh.network.okhttp;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.wwh.library.log.Logger;
 import com.android.wwh.network.R;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -34,17 +50,23 @@ public class OkhttpMainActivity extends AppCompatActivity {
     private static final String API_KEY = "5d5fc651748d45898d50d4f204e7defb";
     private static final String BASE_URL = "https://free-api.heweather.com/v5/";
     private static final String CITY = "CN101020100";//上海
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
 
     private OkHttpClient mOkHttpClient;
+    private RxPermissions mRxPermissions;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_okhttp_main);
+        ButterKnife.bind(this);
 
         //创建okHttpClient对象
         mOkHttpClient = new OkHttpClient();
 
+
+        mRxPermissions = new RxPermissions(this);
     }
 
     /**
@@ -76,6 +98,7 @@ public class OkhttpMainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     /**
      * 基于Http的文件上传
@@ -125,18 +148,151 @@ public class OkhttpMainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 文件下载
+     */
+    public void testHttpFileDownload(View view) {
+        // 申请权限
+        mRxPermissions
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean granted) throws Exception {
+                        if (granted) { // Always true pre-M
+                            Request request = new Request.Builder()
+                                    .url("http://imtt.dd.qq.com/16891/850C513181BCB459AE2B713FA5820E45.apk?fsname=com.jianshu.haruki_2.5.2_2017080714.apk&csr=1bbd")
+                                    .build();
+                            mOkHttpClient.newCall(request).enqueue(new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+                                    Logger.i(e.getMessage());
+                                }
+
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    if (response.isSuccessful()) {
+                                        writeFile(response);
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(OkhttpMainActivity.this, "没有SdCard权限!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 将流写入文件
+     *
+     * @param response
+     */
+    private void writeFile(Response response) {
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        Logger.i("path = " + path);
+        File file = new File(path, "test.apk");
+        InputStream is = response.body().byteStream();
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            byte[] bytes = new byte[1024];
+            int len = 0;
+            long totalSize = response.body().contentLength();
+            long sum = 0;
+            while ((len = is.read(bytes)) != -1) {
+                sum += len;
+                fos.write(bytes,0,len); // 注意不能用fos.write(bytes)
+
+                int progress = (int) ((sum * 1.0f / totalSize) * 100);
+                Message message = handler.obtainMessage(1);
+                message.arg1 = progress;
+                handler.sendMessage(message);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                mProgressBar.setProgress(msg.arg1);
+            }
+        }
+    };
+
+    /**
+     * Http Post 携带参数
+     * 没有对应的API，无法测试真的很尴尬
+     */
+    public void testHttpPostJson(View view) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("city", CITY);
+            jsonObject.put("key", API_KEY);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String jsonParams = jsonObject.toString();
+        Logger.i("jsonParams:" + jsonParams);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonParams);
+        Request request = new Request.Builder()
+                .url("https://free-api.heweather.com/v5/now")
+                .post(requestBody)
+                .build();
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Logger.i("onResponse:");
+                    Logger.json(response.body().string());
+                }
+            }
+        });
+    }
+
 
     /**
      * Http Post 携带参数
      */
-    public void testHttpPost(View view) {
+    public void testHttpPostForm(View view) {
         // okhttp3.FormBody instead of FormEncodingBuilder.
         // 添加多个String键值对，然后去构造RequestBody，最后完成我们Request的构造。
         FormBody body = new FormBody.Builder()
-                .add("username", "刘晖")
+                .add("city", CITY)
+                .add("key", API_KEY)
                 .build();
+        // RequestBody 的实现类有FormBody和MultipartBody
         Request request = new Request.Builder()
-                .url("url")
+                .url("https://free-api.heweather.com/v5/now")
                 .post(body)
                 .build();
         mOkHttpClient.newCall(request).enqueue(new Callback() {
@@ -148,7 +304,10 @@ public class OkhttpMainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
+                if (response.isSuccessful()) {
+                    Logger.i("onResponse:");
+                    Logger.json(response.body().string());
+                }
             }
         });
     }
@@ -160,6 +319,7 @@ public class OkhttpMainActivity extends AppCompatActivity {
 
         //创建一个Request
         final Request request = new Request.Builder()
+                .get()
                 //                .addHeader()
                 //                .method()
                 .url("https://free-api.heweather.com/v5/now?city=" + CITY + "&key=" + API_KEY) // 实况天气-now
@@ -175,24 +335,26 @@ public class OkhttpMainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                // 希望获得返回的字符串
-                Logger.i("onResponse:");
-                Logger.json(response.body().string());
-                // 希望获得返回的二进制字节数组
-                //                response.body().bytes();
-                // 想拿到返回的inputStream,这里支持大文件下载.有inputStream我们就可以通过IO的方式写文件
-                //                response.body().byteStream();
-                // 可以通过IO的方式写文件，说明：onResponse执行的线程并不是UI线程
+                if (response.isSuccessful()) {
+                    // 希望获得返回的字符串
+                    Logger.i("onResponse:");
+                    Logger.json(response.body().string());
+                    // 希望获得返回的二进制字节数组
+                    //                response.body().bytes();
+                    // 想拿到返回的inputStream,这里支持大文件下载.有inputStream我们就可以通过IO的方式写文件
+                    //                response.body().byteStream();
+                    // 可以通过IO的方式写文件，说明：onResponse执行的线程并不是UI线程
 
-                // 希望操作UI
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                    // 希望操作UI
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    });
+
+                    if (response.body() != null) {
+                        response.body().close();
                     }
-                });
-
-                if (response.body() != null) {
-                    response.body().close();
                 }
             }
         });
