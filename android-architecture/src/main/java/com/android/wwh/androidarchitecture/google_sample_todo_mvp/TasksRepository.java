@@ -210,6 +210,7 @@ public class TasksRepository implements TasksDataSource {
         Task cachedTask = getTaskWithId(taskId);
 
         // Respond immediately with cache if available
+        // 缓存获取数据，如果获取成功则直接回调
         if (cachedTask != null) {
             callback.onTaskLoaded(cachedTask);
             return;
@@ -218,6 +219,7 @@ public class TasksRepository implements TasksDataSource {
         // Load from server/persisted if needed.
 
         // Is the task in the local data source? If not, query the network.
+        // 本地获取数据
         mTasksLocalDataSource.getTask(taskId, new GetTaskCallback() {
             @Override
             public void onTaskLoaded(Task task) {
@@ -231,6 +233,7 @@ public class TasksRepository implements TasksDataSource {
 
             @Override
             public void onDataNotAvailable() {
+                //本地获取数据失败，使用网络数据
                 mTasksRemoteDataSource.getTask(taskId, new GetTaskCallback() {
                     @Override
                     public void onTaskLoaded(Task task) {

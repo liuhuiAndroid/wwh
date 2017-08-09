@@ -29,6 +29,7 @@ import java.util.List;
  * methods to inform the user of network/database errors or successful operations.
  * For example, when a new task is created, it's synchronously stored in cache but usually every
  * operation on database or network should be executed in a different thread.
+ * 在这里TasksDataSource中定义了内部接口GetTaskCallback。从而实现TasksRepository中数据获取的时候的回调
  */
 public interface TasksDataSource {
 

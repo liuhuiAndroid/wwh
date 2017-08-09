@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/android-architecture/android-architecture.iml" filepath="$PROJECT_DIR$/android-architecture/android-architecture.iml" />
       <module fileurl="file://$PROJECT_DIR$/annotationprocessortest/annotationprocessortest.iml" filepath="$PROJECT_DIR$/annotationprocessortest/annotationprocessortest.iml" />
       <module fileurl="file://$PROJECT_DIR$/javabasis/javabasis.iml" filepath="$PROJECT_DIR$/javabasis/javabasis.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
