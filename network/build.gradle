@@ -37,4 +37,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 }
