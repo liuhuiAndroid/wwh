@@ -32,6 +32,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.Headers;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -63,10 +64,40 @@ public class OkhttpMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //创建okHttpClient对象
-        mOkHttpClient = new OkHttpClient();
-
+        //        mOkHttpClient = new OkHttpClient();
+        mOkHttpClient = new OkHttpClient.Builder()
+                .addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Response response = chain.proceed(chain.request());
+                        return response.newBuilder().body(new ProgressResponseBody(response.body(), new MyProgressListener())).build();
+                    }
+                }).build();
 
         mRxPermissions = new RxPermissions(this);
+    }
+
+    class MyProgressListener implements ProgressListener {
+
+        @Override
+        public void onProgress(final int progress) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressBar.setProgress(progress);
+                }
+            });
+        }
+
+        @Override
+        public void onDone(long totalSize) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(OkhttpMainActivity.this, "下载完成", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     /**
@@ -150,6 +181,7 @@ public class OkhttpMainActivity extends AppCompatActivity {
 
     /**
      * 文件下载
+     * 使用OkHttp实现下载的进度监听 两种方式
      */
     public void testHttpFileDownload(View view) {
         // 申请权限
@@ -171,6 +203,7 @@ public class OkhttpMainActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(Call call, Response response) throws IOException {
                                     if (response.isSuccessful()) {
+                                        //TODO TODO TODO 也可以通过拦截器方式写入内容和文件上传，待研究
                                         writeFile(response);
                                     }
                                 }
@@ -190,7 +223,7 @@ public class OkhttpMainActivity extends AppCompatActivity {
     private void writeFile(Response response) {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         Logger.i("path = " + path);
-        File file = new File(path, "test.apk");
+        File file = new File(path, "test2.apk");
         InputStream is = response.body().byteStream();
         FileOutputStream fos = null;
         try {
@@ -201,12 +234,13 @@ public class OkhttpMainActivity extends AppCompatActivity {
             long sum = 0;
             while ((len = is.read(bytes)) != -1) {
                 sum += len;
-                fos.write(bytes,0,len); // 注意不能用fos.write(bytes)
-
-                int progress = (int) ((sum * 1.0f / totalSize) * 100);
-                Message message = handler.obtainMessage(1);
-                message.arg1 = progress;
-                handler.sendMessage(message);
+                fos.write(bytes, 0, len); // 注意不能用fos.write(bytes)
+                // 方法一是常规方法
+                //                int progress = (int) ((sum * 1.0f / totalSize) * 100);
+                //                Message message = handler.obtainMessage(1);
+                //                message.arg1 = progress;
+                //                handler.sendMessage(message);
+                //方法二是用拦截器模式
             }
 
         } catch (FileNotFoundException e) {
