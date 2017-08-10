@@ -1,6 +1,10 @@
 package com.android.wwh.network.okhttputil;
 
+import com.google.gson.internal.$Gson$Types;
+
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import okhttp3.Call;
 
@@ -8,12 +12,27 @@ import okhttp3.Call;
  * Created by lh on 2017/8/9.
  */
 
-public interface BaseCallback<T> {
+public abstract class BaseCallback<T> {
 
-    void onSuccess(T t);
+    public Type mType;
 
-    void onError(int code);
+    static Type getSuperclassTypeParameter(Class<?> subclass){
+        Type superclass = subclass.getGenericSuperclass();
+        if(superclass instanceof Class){
+            return null;
+        }
+        ParameterizedType parameterizedType = (ParameterizedType) superclass;
+        return $Gson$Types.canonicalize(parameterizedType.getActualTypeArguments()[0]);
+    }
 
-    void onFailure(Call call, IOException e);
+    public BaseCallback(){
+        mType = getSuperclassTypeParameter(this.getClass());
+    }
+
+    void onSuccess(T t){}
+
+    void onError(int code){}
+
+    void onFailure(Call call, IOException e){}
 
 }

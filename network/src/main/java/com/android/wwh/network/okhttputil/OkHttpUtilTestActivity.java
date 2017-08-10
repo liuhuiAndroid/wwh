@@ -21,7 +21,7 @@ public class OkHttpUtilTestActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //实现GET请求
-        SimpleHttpUtil.newBuilder().url("www.baidu.com").get().build()
+        SimpleHttpClient.newBuilder().url("www.baidu.com").get().build()
                 .enqueue(new BaseCallback<User>() {
 
                     @Override
@@ -41,7 +41,7 @@ public class OkHttpUtilTestActivity extends AppCompatActivity {
                 });
 
         //实现POST FORM表单
-        SimpleHttpUtil.newBuilder().url("www.baidu.com")
+        SimpleHttpClient.newBuilder().url("www.baidu.com")
                 .post()
                 .addParam("key", "value")
                 .addParam("key2", "value2")
@@ -65,7 +65,7 @@ public class OkHttpUtilTestActivity extends AppCompatActivity {
                 } );
 
         //实现POST JSON参数
-        SimpleHttpUtil.newBuilder().url("www.baidu.com")
+        SimpleHttpClient.newBuilder().url("www.baidu.com")
                 .json()
                 .addParam("key", "value")
                 .addParam("key2", "value2")
