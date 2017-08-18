@@ -22,6 +22,8 @@
 
         <activity android:name=".okhttp.OkhttpMainActivity"/>
 
+        <activity android:name=".retrofit.RetrofitActivity"/>
+
 
     </application>
 

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.android.wwh.network.okhttp.OkhttpMainActivity;
+import com.android.wwh.network.retrofit.RetrofitActivity;
 
 /**
  * Created by we-win on 2017/7/11.
@@ -26,6 +27,9 @@ public class StartActivity extends AppCompatActivity {
 
     public void volley(View view){
 
+    }
+    public void retrofit(View view){
+        startActivity(new Intent(this, RetrofitActivity.class));
     }
 
 
