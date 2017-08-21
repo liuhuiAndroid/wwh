@@ -5,5 +5,7 @@ package com.android.wwh.newfunction.proxytest;
  */
 
 public interface OnClickListener {
+
     void onClick();
+
 }
