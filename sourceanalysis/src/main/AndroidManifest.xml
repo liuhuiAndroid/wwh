@@ -16,8 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".EventBus.EventBusActivity"/>
+
         <activity android:name=".handler.HandlerThreadActivity"/>
+
+        <activity android:name=".threadlocal.ThreadLocalTestActivity"/>
+
     </application>
 
 </manifest>

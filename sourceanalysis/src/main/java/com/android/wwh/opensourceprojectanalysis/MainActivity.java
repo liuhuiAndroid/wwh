@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.android.wwh.opensourceprojectanalysis.EventBus.EventBusActivity;
 import com.android.wwh.opensourceprojectanalysis.handler.HandlerThreadActivity;
+import com.android.wwh.opensourceprojectanalysis.threadlocal.ThreadLocalTestActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void handlerThreadOnClick(View view){
         startActivity(new Intent(MainActivity.this,HandlerThreadActivity.class));
+    }
+
+    public void threadLocalStudy(View view){
+        startActivity(new Intent(MainActivity.this,ThreadLocalTestActivity.class));
     }
 
 }
