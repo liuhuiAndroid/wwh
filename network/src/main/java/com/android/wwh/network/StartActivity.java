@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.android.wwh.network.okhttp.OkhttpMainActivity;
 import com.android.wwh.network.retrofit.RetrofitActivity;
+import com.android.wwh.network.volley.ThreadTestActivity;
 
 /**
  * Created by we-win on 2017/7/11.
@@ -26,8 +27,9 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public void volley(View view){
-
+        startActivity(new Intent(this, ThreadTestActivity.class));
     }
+    
     public void retrofit(View view){
         startActivity(new Intent(this, RetrofitActivity.class));
     }

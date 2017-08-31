@@ -24,6 +24,9 @@
 
         <activity android:name=".retrofit.RetrofitActivity"/>
 
+        <activity android:name=".volley.MainActivity"/>
+
+        <activity android:name=".volley.ThreadTestActivity"/>
 
     </application>
 
