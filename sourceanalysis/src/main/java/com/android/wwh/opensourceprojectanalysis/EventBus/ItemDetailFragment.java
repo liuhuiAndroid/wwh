@@ -18,6 +18,15 @@ public class ItemDetailFragment extends Fragment {
     private TextView tvDetail;
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_item_detail,
+                container, false);
+        tvDetail = (TextView) rootView.findViewById(R.id.item_detail);
+        return rootView;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // register
@@ -35,16 +44,9 @@ public class ItemDetailFragment extends Fragment {
      * List点击时会发送些事件，接收到事件后更新详情
      */
     public void onEventUI(Item item) {
-        if (item != null)
+        if (item != null) {
             tvDetail.setText(item.content);
+        }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_item_detail,
-                container, false);
-        tvDetail = (TextView) rootView.findViewById(R.id.item_detail);
-        return rootView;
-    }
 }
